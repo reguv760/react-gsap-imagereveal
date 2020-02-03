@@ -1,25 +1,35 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useRef, useEffect } from "react";
+import People from "./img/mpumelelo-macu-l_YNobbDYJk-unsplash.jpg";
+
+import CSSRulePlugin from "gsap/CSSRulePlugin";
+import { TimelineLite, Power2 } from "gsap";
+
+import "./App.scss";
 
 function App() {
+  let container = useRef(null);
+  let image = useRef(null);
+
+  let imageReveal = CSSRulePlugin.getRule(".img-container:after");
+
+  const tl = new TimelineLite();
+
+  useEffect(() => {
+    tl.to(container, 0, { css: { visibility: "visible " } })
+      .to(imageReveal, 1.4, { width: "0%", ease: Power2.easeInOut })
+      .from(image, 1.4, { scale: 1.6, ease: Power2.easeInOut, delay: -1.6 });
+  });
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <section className='main'>
+      <div className='container' ref={el => (container = el)}>
+        <>
+          <div className='img-container'>
+            <img src={People} alt='gallery' ref={el => (image = el)} />
+          </div>
+        </>
+      </div>
+    </section>
   );
 }
 
